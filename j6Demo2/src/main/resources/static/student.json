@@ -1,0 +1,10 @@
+{
+	"name": "Nông Văn Đạt",
+	"gender": true,
+	"marks": 8.5,
+	"contact": {
+		"email": "datnv@gmail.com",
+		"phone": "0346321997"
+	},
+	"subjects": ["WEB205", "COM108"]
+}

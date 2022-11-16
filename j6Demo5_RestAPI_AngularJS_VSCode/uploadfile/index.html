@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FILE</title>
+    <script src="../angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.2.0/exceljs.min.js"></script>
+</head>
+<body class="container">
+    <h3>RESTful - File Manager</h3>
+    <div ng-app="app" ng-controller="ctrl">
+        <label>
+            Upload Files:
+            <input type="file"  multiple
+            onchange="angular.element(this).scope().upload(this.files)" />
+        </label>
+        <hr>
+        anh
+        <label ng-repeat="filename in filenames" title="Double click to delete">
+            <img ng-src="{{url(filename)}}" ng-dblclick="delete(filename)" alt="" style="width: 150px;height:150px"> 
+        </label>
+    </div>
+   
+   <script src="./file-ctrl.js"></script>
+</body>
+</html>

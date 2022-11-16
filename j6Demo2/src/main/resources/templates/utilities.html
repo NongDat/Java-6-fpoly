@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>UTILITIES OBJECTS</title>
+</head>
+<body>
+	<h1>UTILITIES OBJECTS</h1>
+	<b>TỔNG HỢP</b>
+	<ul>
+		<li>Today: <i th:text="${#dates.format(now, 'EEE,dd-MM-yyyy')}"></i></li>
+		<li>Number of students: <i th:text="${#lists.size(dssv)}"></i></li>
+	</ul>
+	<h3>DANH SÁCH</h3>
+	<ul th:each="sv:${dssv}" th:object="${sv}">
+		<li>
+			Name: 
+			<b th:text="*{#strings.capitalizeWords(name)}"></b>
+		</li>
+		<li>
+			Marks:
+			<b th:text="*{#numbers.formatDecimal(marks,0,'COMMA',2,'POINT')}"></b>
+		</li>
+		<li><i>Gender: </i> <b th:text="*{gender? 'Male' : 'Female'}"></b></li>
+		<li><i>Contact: </i> <b th:text="*{contact.email}"></b></li>
+		<li><i>Contact: </i> <b th:text="*{contact.phone}"></b></li>
+		<li>
+			Number of subjects:
+			<b th:text="*{#arrays.length(subjects)}"></b>
+		</li>
+		<li><i>Subjects: </i> 
+			<ul>
+				<li th:each="subject:*{subjects}">
+					<b th:text="${subject}"></b>
+				</li>
+			</ul>
+		</li>
+		<li th:switch="*{#arrays.length(subjects)}">
+			<i>Time: </i>
+			<b th:case="1">Mới Vào</b>
+			<b th:case="2">Đang học</b>
+			<b th:case="3">Sắp ra trường</b>
+		</li>
+		<li th:if="*{marks} > 9"> <i>Title: </i><b>Golden Bee</b></li>
+	</ul>
+</body>
+</html>

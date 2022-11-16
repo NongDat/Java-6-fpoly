@@ -1,0 +1,35 @@
+[
+{
+	"name": "Nông Văn Đạt",
+	"gender": true,
+	"marks": 9.5,
+	"contact":
+	{
+		"email": "datnv@gmail.com",
+		"phone": "0346321997"
+	},
+	"subjects": ["WEB205", "COM108"]
+},
+{
+	"name": "Nguyễn Hương",
+	"gender": true,
+	"marks": 8.5,
+	"contact":
+	{
+		"email": "huongnt@gmail.com",
+		"phone": "0346321997"
+	},
+	"subjects": ["WEB205", "COM108"]
+},
+{
+	"name": "Nguyễn Võ",
+	"gender": true,
+	"marks": 6.5,
+	"contact":
+	{
+		"email": "vont@gmail.com",
+		"phone": "0346321997"
+	},
+	"subjects": ["WEB205", "COM108"]
+}
+]
