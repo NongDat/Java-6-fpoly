@@ -14,6 +14,10 @@ app.config(function($routeProvider) {
         templateUrl:"/assets/admin/authority/unauthorized.html",
         controller: "authority-ctrl"
     })
+    .when("/orderStatus",{
+            templateUrl:"/assets/admin/order/orderStatus.html",
+            controller: "orderStatus-ctrl"
+    })
     .otherwise({
         template:"<h1 class='text-center'>FPT Polytechnic Administration</h1>"
     });

@@ -75,7 +75,7 @@ app.controller('product-ctrl', function($scope, $http){
         }).catch(err => {
             alert('Lỗi xóa sản phẩm!');
             console.log('err', err);
-        })
+        })  
     };
 
     // Upload hình

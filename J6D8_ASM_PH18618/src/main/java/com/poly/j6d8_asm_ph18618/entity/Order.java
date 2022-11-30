@@ -23,7 +23,7 @@ public class Order {
     @Column(name = "CreateDate")
     private Date createDate;
     private String address;
-    private String status;
+    private OrderStatus status = OrderStatus.PENDING;
     @ManyToOne
     @JoinColumn(name = "CustomerId")
     private Account account;
