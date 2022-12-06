@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Getter
@@ -18,17 +20,23 @@ import java.util.List;
 public class Account {
     @Id
     @Column(name = "Username")
+    @NotBlank
     private String username;
     @Column(name = "Password")
+    @NotBlank
     private String password;
     @Column(name = "Fullname")
+    @NotBlank
     private String fullname;
     @Column(name = "Email")
+    @NotBlank
     private String email;
     @Column(name = "Photo")
+    @NotBlank
     private String photo;
     @Column(name = "Activated")
-    private Boolean activated;
+    @NotNull
+    private Boolean activated=true;
     @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "account")
     List<Authority> authorities;
@@ -36,5 +44,15 @@ public class Account {
     @OneToMany(mappedBy = "account")
     List<Order> orders;
 
-
+    @Override
+    public String toString() {
+        return "Account{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", fullname='" + fullname + '\'' +
+                ", email='" + email + '\'' +
+                ", photo='" + photo + '\'' +
+                ", activated=" + activated +
+                '}';
+    }
 }

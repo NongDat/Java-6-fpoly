@@ -38,15 +38,20 @@ app.controller('product-ctrl', function($scope, $http){
     // Thêm sản phẩm mời
     $scope.create = function() {
         var item = angular.copy($scope.form);
-        $http.post(`/rest/products`, item).then(resp => {
-            resp.data.createDate = new Date(resp.data.createDate)
-            $scope.items.push(resp.data);
-            $scope.reset();
-            alert('Thêm mới sản phẩm thành công');
-        }).catch(err => {
-            alert("error", err);
-            console.log(err);
-        })
+        if(!validator()) {
+            console.log("Err")
+        } else{
+            alert("OK")
+        }
+        // $http.post(`/rest/products`, item).then(resp => {
+        //     resp.data.createDate = new Date(resp.data.createDate)
+        //     $scope.items.push(resp.data);
+        //     $scope.reset();
+        //     alert('Thêm mới sản phẩm thành công');
+        // }).catch(err => {
+        //     alert("error", err);
+        //     console.log(err);
+        // })
     };
 
     // Cập nhập sản phẩm
@@ -121,6 +126,41 @@ app.controller('product-ctrl', function($scope, $http){
         last() {
             this.page = this.count - 1;
         }
+    }
+     function validator() {
+        var name = document.getElementById('name');
+        var nameErr = document.getElementById('nameErr');
+        var price = document.getElementById('price');
+        var priceErr = document.getElementById('priceErr');
+        var createDate = document.getElementById('createDate');
+        var createDateErr = document.getElementById('createDateErr');
+        var image = document.getElementById('image');
+        var imageErr = document.getElementById('imageErr');
+        if(name.value.length == 0 || price.value.length == 0|| image.value.length == 0||createDate.value.length == 0) {
+            
+        if(name.value.length == 0) {
+            name.style.border = '1px solid red';
+            nameErr.innerHTML = "Không để trống tên!";
+           
+        }
+        if(price.value.length == 0) {
+            price.style.border = '1px solid red';
+            priceErr.innerHTML = "Không để trống giá!";
+            
+        }
+        if(image.value.length == 0) {
+            image.style.border = '1px solid red';
+            imageErr.innerHTML = "Không để trống ảnh!";
+            
+        }
+        if(createDate.value.length == 0) {
+            createDate.style.border = '1px solid red';
+            createDateErr.innerHTML = "Không để trống ngày tạo!";
+            
+        }
+            return false;
+        }
+        return true;
     }
     
 })

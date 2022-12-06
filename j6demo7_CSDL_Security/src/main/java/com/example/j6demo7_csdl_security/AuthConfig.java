@@ -1,6 +1,7 @@
 package com.example.j6demo7_csdl_security;
 
-import com.example.j6demo7_csdl_security.service.UserService;
+import com.example.j6demo7_csdl_security.dao.AccountDAO;
+import com.example.j6demo7_csdl_security.entity.Account;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,10 +10,14 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.stream.Collectors;
 
 @Configuration
 @EnableWebSecurity
@@ -28,11 +33,32 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
      *  QUản Lý người dữ liệu ngươi sử dụng
      *  tìm cách xây dựng ra nguồn dữ liệu để bỏ vào trong  "auth"
      */
+//    @Autowired
+//    UserService userService;
     @Autowired
-    UserService userService;
+    AccountDAO accountDAO;
+    @Autowired
+    BCryptPasswordEncoder pe;
+    @Autowired
+    HttpServletRequest req;
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService);
+        auth.userDetailsService(username -> {
+            try {
+                Account account = accountDAO.findById(username).get();
+                // Tao userDetails từ Account
+                String password = pe.encode(account.getPassword());
+                String[] roles = account.getAuthorities().stream()
+                        .map(au -> au.getRole().getId())
+                        .collect(Collectors.toList()).toArray(new String[0]);
+                return User.withUsername(username)
+                        .password(password)
+                        .roles(roles)
+                        .build();
+            } catch (Exception e) {
+                throw new UsernameNotFoundException(username + "not found!");
+            }
+        });
     }
 
     /**
@@ -46,8 +72,8 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
 
         // Phân quyền sử dụng
         http.authorizeRequests()
-                .antMatchers("/home/admins").hasRole("ADMIN") // trang cho phép Admin truy cập
-                .antMatchers("/home/users").hasAnyRole("ADMIN", "USER")
+                .antMatchers("/home/admins").hasRole("DIRE") // trang cho phép Admin truy cập
+                .antMatchers("/home/users").hasAnyRole("DIRE", "STAF")
                 .antMatchers("/home/authenticated").authenticated() // bắt buộc phải đăng nhập k cần biết vai trò gì
                 .anyRequest().permitAll();// all trang còn lại cho phép truy cập
 

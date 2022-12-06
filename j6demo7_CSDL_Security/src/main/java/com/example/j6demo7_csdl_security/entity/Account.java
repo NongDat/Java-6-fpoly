@@ -30,6 +30,18 @@ public class Account implements Serializable {
     @Column(name = "Activated")
     private Boolean activated;
     @JsonIgnore
-    @OneToMany(mappedBy = "account")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "account")
     List<Authority> authorities;
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", fullname='" + fullname + '\'' +
+                ", email='" + email + '\'' +
+                ", photo='" + photo + '\'' +
+                ", activated=" + activated +
+                '}';
+    }
 }

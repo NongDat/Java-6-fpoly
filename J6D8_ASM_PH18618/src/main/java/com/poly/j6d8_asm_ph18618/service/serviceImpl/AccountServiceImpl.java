@@ -24,6 +24,11 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    public void save(Account account) {
+        accountDAO.save(account);
+    }
+
+    @Override
     public List<Account> getAdministrators() {
         return accountDAO.getAdministrators();
     }

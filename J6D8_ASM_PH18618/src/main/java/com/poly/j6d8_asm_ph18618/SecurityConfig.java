@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import javax.servlet.http.HttpSession;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
@@ -26,6 +27,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     AccountService accountService;
     @Autowired
     BCryptPasswordEncoder pe;
+    @Autowired
+    HttpSession session;
     // cung cấp nguồn dữ liệu đăng nhập
 
     @Override
@@ -34,6 +37,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(username -> {
             try {
                 Account user = accountService.findById(username);
+                System.out.println(user);
+                session.setAttribute("userLogin", user);
                 String password = pe.encode(user.getPassword());
                 String[] roles = user.getAuthorities().stream()
                         .map(er -> er.getRole().getId())

@@ -27,7 +27,7 @@ public class HomeSlide7Controller {
     @RequestMapping("/home/admins")
     public String admins(Model model) {
         //        Cấu hình bằng lập trình
-        if(!req.isUserInRole("ADMIN")) {
+        if(!req.isUserInRole("DIRE")) {
             return "redirect:/auth/access/denied";
         }
         model.addAttribute("msg", "Hello Adminstrator");
@@ -38,7 +38,7 @@ public class HomeSlide7Controller {
     @RequestMapping("/home/users")
     public String users(Model model) {
         //        Cấu hình bằng lập trình
-        if(!(req.isUserInRole("ADMIN") || req.isUserInRole("USER"))) {
+        if(!(req.isUserInRole("DIRE") || req.isUserInRole("STAF"))) {
             return "redirect:/auth/access/denied";
         }
         model.addAttribute("msg", "Hello staff");

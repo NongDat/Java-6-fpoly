@@ -9,5 +9,6 @@ public interface AccountService {
 
     List<Account> findAll();
 
+    void save(Account account);
     List<Account> getAdministrators();
 }

@@ -10,9 +10,9 @@
   <h3>Login Form</h3>
   <hr>
   <i th:text="${msg}" style="color:red;"></i>
-  <form action="/auth/login" method="post">
-    <input name="username" placeholder="username?"> <br>
-    <input name="password" placeholder="Password?"> <br>
+  <form th:action="@{/auth/login}" method="post">
+    <input name="username" class="form-control"> <br>
+    <input name="password" type="password" class="form-control"> <br>
     <input type="checkbox" name="remember?"> Remember me? <br>
     <button>Login</button>
   </form>

@@ -11,11 +11,13 @@
                 <div class="row">
                     <div class="form-group col-sm-6">
                         <div>Name</div>
-                        <input ng-model="form.name" class="form-control">
+                        <input ng-model="form.name" id="name" class="form-control">
+                        <div id="nameErr" class="text-danger"></div>
                     </div>
                     <div class="form-group col-sm-6">
                         <div>Price</div>
-                        <input ng-model="form.price" class="form-control">
+                        <input ng-model="form.price" id="price" class="form-control">
+                        <div id="priceErr" class="text-danger"></div>
                     </div>
                 </div>
                 <div class="row">
@@ -23,6 +25,7 @@
                         <div>Image</div>
                         <input type="file" id="image" class="form-control"
                         onchange="angular.element(this).scope().imageChanged(this.files)">
+                        <div id="imageErr" class="text-danger"></div>
                     </div>
                     <div class="form-group col-sm-6">
                         <div>Category</div>
@@ -34,7 +37,8 @@
                 <div class="row">
                     <div class="form-group col-sm-6">
                         <div>Create Date</div>
-                        <input ng-model="form.createDate" type="date" class="form-control">
+                        <input ng-model="form.createDate" id="createDate" type="date" class="form-control">
+                        <div id="createDateErr" class="text-danger"></div>
                     </div>
                     <div class="form-group col-sm-6">
                         <div>Available?</div>
