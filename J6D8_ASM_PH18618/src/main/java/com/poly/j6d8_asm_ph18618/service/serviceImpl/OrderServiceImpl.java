@@ -8,6 +8,7 @@ import com.poly.j6d8_asm_ph18618.dao.OrderDAO;
 import com.poly.j6d8_asm_ph18618.dao.OrderDetailDao;
 import com.poly.j6d8_asm_ph18618.entity.Order;
 import com.poly.j6d8_asm_ph18618.entity.OrderDetail;
+import com.poly.j6d8_asm_ph18618.entity.OrderStatus;
 import com.poly.j6d8_asm_ph18618.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,6 +49,11 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> getAll() {
         return orderDAO.findAll();
+    }
+
+    @Override
+    public List<Order> getOrderByStatus(OrderStatus orderStatus) {
+        return orderDAO.getOrderByStatus(orderStatus);
     }
 
     @Override

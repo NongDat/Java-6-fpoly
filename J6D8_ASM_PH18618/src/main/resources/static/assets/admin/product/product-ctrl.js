@@ -1,9 +1,9 @@
-app.controller('product-ctrl', function($scope, $http){
+app.controller('product-ctrl', function ($scope, $http) {
     $scope.items = [];
     $scope.cates = [];
     $scope.form = {};
-    
-    $scope.initialize = function() {
+
+    $scope.initialize = function () {
         // load products
         $http.get('/rest/products').then(resp => {
             $scope.items = resp.data;
@@ -16,51 +16,57 @@ app.controller('product-ctrl', function($scope, $http){
         $http.get('/rest/categories').then(resp => {
             $scope.cates = resp.data;
         })
+
     }
-
+    
     $scope.initialize();
-
     // Xoá form
-    $scope.reset = function() {
+    $scope.reset = function () {
         $scope.form = {
             createDate: new Date(),
+            category:{
+                id: '1000',
+            },
             image: 'cloud-upload.jpg',
             available: true
         }
     };
+    $scope.reset();
 
     // Hiển thị lên form
-    $scope.edit = function(item) {
+    $scope.edit = function (item) {
         $scope.form = angular.copy(item);
         $('.nav-tabs a:eq(0)').tab('show');
     };
 
     // Thêm sản phẩm mời
-    $scope.create = function() {
+    $scope.create = function () {
         var item = angular.copy($scope.form);
-        if(!validator()) {
-            console.log("Err")
-        } else{
-            alert("OK")
+        if (!validator()) {
+            alert("Vui lòng nhập đầy đủ thông tin!")
+        } else {
+            $http.post(`/rest/products`, item).then(resp => {
+                resp.data.createDate = new Date(resp.data.createDate)
+                $scope.items.push(resp.data);
+                $scope.reset();
+                $scope.initialize();
+                $('.nav-tabs a:eq(1)').tab('show');
+                alert('Thêm mới sản phẩm thành công');
+            }).catch(err => {
+                alert("error", err);
+                console.log(err);
+            })
         }
-        // $http.post(`/rest/products`, item).then(resp => {
-        //     resp.data.createDate = new Date(resp.data.createDate)
-        //     $scope.items.push(resp.data);
-        //     $scope.reset();
-        //     alert('Thêm mới sản phẩm thành công');
-        // }).catch(err => {
-        //     alert("error", err);
-        //     console.log(err);
-        // })
     };
 
     // Cập nhập sản phẩm
-    $scope.update = function() {
+    $scope.update = function () {
         var item = angular.copy($scope.form);
         $http.put(`/rest/products/${item.id}`, item).then(resp => {
             var index = $scope.items.findIndex(p => p.id === item.id);
             $scope.items[index] = item;
             $('.nav-tabs a:eq(1)').tab('show');
+            $scope.initialize();
             alert('Cập nhập sản phẩm thành công!');
         }).catch(err => {
             alert('Lỗi cập nhập sản phẩm!');
@@ -69,27 +75,35 @@ app.controller('product-ctrl', function($scope, $http){
     };
 
     // Xóa sản phẩm
-    $scope.delete = function(item) {
-        var item = angular.copy($scope.form);
-        $http.delete(`/rest/products/${item.id}`).then(resp => {
+    $scope.delete = function (item) {
+        item.available = item.available == true ? false : true;
+        $http.put(`/rest/products/${item.id}`, item).then(resp => {
             var index = $scope.items.findIndex(p => p.id === item.id);
-            $scope.items.splice(index, 1);
-            $scope.reset();
+            $scope.items[index] = item;
             $('.nav-tabs a:eq(1)').tab('show');
-            alert('Xóa sản phẩm thành công!');
+            $scope.initialize();
+            if (item.available == false) {
+                alert('Xóa sản phẩm thành công!');
+            } else {
+                alert('Khôi phục sản phẩm thành công!');
+            }
+
         }).catch(err => {
-            alert('Lỗi xóa sản phẩm!');
+            alert('Lỗi cập nhập sản phẩm!');
             console.log('err', err);
-        })  
+        })
     };
 
+
+
+
     // Upload hình
-    $scope.imageChanged = function(files) {
+    $scope.imageChanged = function (files) {
         var data = new FormData();
         data.append('file', files[0]);
         $http.post('/rest/upload/images', data, {
             transformRequest: angular.identity,
-            headers: { 'Content-Type':undefined}
+            headers: { 'Content-Type': undefined }
         }).then(resp => {
             $scope.form.image = resp.data.name;
         }).catch(err => {
@@ -102,24 +116,24 @@ app.controller('product-ctrl', function($scope, $http){
         page: 0,
         size: 10,
         get items() {
-            var start = this.page*this.size;
-            return $scope.items.slice(start,start + this.size);
+            var start = this.page * this.size;
+            return $scope.items.slice(start, start + this.size);
         },
         get count() {
-            return Math.ceil(1.0 *$scope.items.length / this.size);
+            return Math.ceil(1.0 * $scope.items.length / this.size);
         },
         first() {
             this.page = 0;
         },
         prev() {
             this.page--;
-            if(this.page < 0) {
+            if (this.page < 0) {
                 this.last();
             }
         },
         next() {
             this.page++;
-            if(this.page >= this.count) {
+            if (this.page >= this.count) {
                 this.first();
             }
         },
@@ -127,40 +141,41 @@ app.controller('product-ctrl', function($scope, $http){
             this.page = this.count - 1;
         }
     }
-     function validator() {
+    function validator() {
         var name = document.getElementById('name');
-        var nameErr = document.getElementById('nameErr');
         var price = document.getElementById('price');
-        var priceErr = document.getElementById('priceErr');
         var createDate = document.getElementById('createDate');
-        var createDateErr = document.getElementById('createDateErr');
         var image = document.getElementById('image');
-        var imageErr = document.getElementById('imageErr');
-        if(name.value.length == 0 || price.value.length == 0|| image.value.length == 0||createDate.value.length == 0) {
-            
-        if(name.value.length == 0) {
-            name.style.border = '1px solid red';
-            nameErr.innerHTML = "Không để trống tên!";
-           
-        }
-        if(price.value.length == 0) {
-            price.style.border = '1px solid red';
-            priceErr.innerHTML = "Không để trống giá!";
-            
-        }
-        if(image.value.length == 0) {
-            image.style.border = '1px solid red';
-            imageErr.innerHTML = "Không để trống ảnh!";
-            
-        }
-        if(createDate.value.length == 0) {
-            createDate.style.border = '1px solid red';
-            createDateErr.innerHTML = "Không để trống ngày tạo!";
-            
-        }
+        if (name.value.length == 0 || price.value.length == 0 || image.value.length == 0 || createDate.value.length == 0) {
+
+            if (name.value.length == 0) {
+                name.style.border = '1px solid red';
+            } else {
+                name.style.border = 'none';
+            }
+            if (price.value.length == 0) {
+                price.style.border = '1px solid red';
+            } else {
+                price.style.border = 'none';
+            }
+            if (image.value.length == 0) {
+                image.style.border = '1px solid red';
+            } else {
+                image.style.border = 'none';
+            }
+            if (createDate.value.length == 0) {
+                createDate.style.border = '1px solid red';
+            } else {
+                createDate.style.border = 'none';
+            }
             return false;
+        } else {
+            name.style.border = 'none';
+            price.style.border = 'none';
+            image.style.border = 'none';
+            createDate.style.border = 'none';
         }
         return true;
     }
-    
+
 })

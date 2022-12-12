@@ -3,6 +3,7 @@ package com.poly.j6d8_asm_ph18618.rest.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.poly.j6d8_asm_ph18618.entity.Order;
+import com.poly.j6d8_asm_ph18618.entity.OrderStatus;
 import com.poly.j6d8_asm_ph18618.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -33,4 +34,28 @@ public class OrderRestController {
     public List<Order> getAll() {
         return orderService.getAll();
     }
+
+    @GetMapping("/list/pending")
+    public List<Order> getOrderByPending() {
+        return orderService.getOrderByStatus(OrderStatus.PENDING);
+    }
+
+    @GetMapping("/list/confirm")
+    public List<Order> getOrderByConfirm() {
+        return orderService.getOrderByStatus(OrderStatus.CONFIRMED);
+    }
+    @GetMapping("/list/delivering")
+    public List<Order> getOrderByDelivering() {
+        return orderService.getOrderByStatus(OrderStatus.DELIVERING);
+    }
+    @GetMapping("/list/successfull")
+    public List<Order> getOrderBySuccessfull() {
+        return orderService.getOrderByStatus(OrderStatus.SUCCESSFUL);
+    }
+
+    @GetMapping("/list/delete")
+    public List<Order> getOrderByDelete() {
+        return orderService.getOrderByStatus(OrderStatus.DELETED);
+    }
+
 }

@@ -44,9 +44,9 @@ app.controller("authority-ctrl", function($scope, $http, $location){
     $scope.grant_authority = function(authority) {
         $http.post(`/rest/authorities`, authority).then(resp => {
             $scope.authorities.push(resp.data);
-            alert('Cấp quyền sử dụng thành công!')
+            swal("congratulations!", 'Cấp quyền sử dụng thành công!', "success");
         }).catch(err => {
-            alert('Cấp quyền sử dụng thất bại!');
+            swal("Error!", 'Cấp quyền sử dụng thất bại!', "error");
             console.log('err',err);
         })
     }
@@ -55,12 +55,11 @@ app.controller("authority-ctrl", function($scope, $http, $location){
         $http.delete(`/rest/authorities/${authority.id}`).then(resp => {
             var index = $scope.authorities.findIndex(a => a.id == authority.id);
             $scope.authorities.splice(index, 1);
-            alert('Thu hồi quyền sử dụng thành công!');
+            swal("congratulations!", 'Thu hồi quyền sử dụng thành công!', "success");
         }).catch(err => {
-            alert('thu hồi quyền thất bại!');
+            swal("Error!", 'Thu hồi quyền thất bại!', "error");
             console.log('Error',err);
         })
     }
-
     $scope.initialize();
 })

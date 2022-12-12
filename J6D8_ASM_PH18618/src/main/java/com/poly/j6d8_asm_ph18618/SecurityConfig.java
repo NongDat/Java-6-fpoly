@@ -79,6 +79,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.logout()
             .logoutUrl("/security/logoff")
             .logoutSuccessUrl("/security/logoff/success");
+
+        //OAuth2 - Dang nhap mang xa hoi
+        http.oauth2Login().loginPage("/security/login/form")
+                .defaultSuccessUrl("/oauth2/login/success", true)
+                .failureUrl("/security/login/error")
+                .authorizationEndpoint()
+                .baseUri("/oauth2/authorization");
     }
 //    Cơ chế mã hóa mật khẩu
     @Bean

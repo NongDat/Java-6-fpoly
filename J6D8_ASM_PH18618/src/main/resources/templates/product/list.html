@@ -13,9 +13,10 @@
                         <img th:src="@{|/assets/images/${p.image}|}">
                     </a>
                 </div>
-                <div class="card-footer text-end ">
-                        <b class="d-flex align-items-center float-start">$[[${p.price}]]</b>
-                    <button class="btn btn-success" th:attr="ng-click=@{|cart.add(${p.id})|}"><i class="bi bi-cart4"></i></button>
+                <div class="card-footer text-end" style="height: 52px;padding-top: 12px;">
+                    <b class="d-flex align-items-center float-start">$[[${p.price}]]</b>
+                    <button th:if="${p.available == true}" class="btn btn-success" th:attr="ng-click=@{|cart.add(${p.id})|}"><i class="bi bi-cart4"></i></button>
+                    <del th:if="${p.available == false}" class="text-danger">Hết Hàng</del>
                 </div>
             </div>
         </div>

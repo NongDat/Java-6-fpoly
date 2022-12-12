@@ -19,13 +19,16 @@
                 <td>{{item.name}}</td>
                 <td>{{item.price | number :2}}</td>
                 <td>{{item.createDate|date:'dd-MM-yyyy'}}</td>
-                <td>{{item.image}}</td>
+                <td>
+                    <img  ng-src="/assets/images/{{item.image}}" style="width: 50px;height: 50px;" alt="">
+                </td>
                 <td>{{item.category.name}}</td>
                 <td>{{item.available?'yes' : 'No'}}</td>
                 <td>
                     <div class="btn-group btn-group-xs">
                         <button class="btn btn-warning" ng-click="edit(item)"><i class="bi bi-gear-fill"></i></button>
-                        <button class="btn btn-danger" ng-click="delete(item)"><i class="bi bi-archive-fill"></i></button>
+                        <button class="btn btn-danger" ng-if="item.available == true" ng-click="delete(item)"><i class="bi bi-archive-fill"></i></button>
+                        <button class="btn btn-primary" ng-if="item.available == false" ng-click="delete(item)"><i class="bi bi-arrow-repeat"></i></button>
                     </div>
                 </td>
             </tr>

@@ -6,7 +6,9 @@ import com.poly.j6d8_asm_ph18618.entity.Authority;
 import com.poly.j6d8_asm_ph18618.entity.Role;
 import com.poly.j6d8_asm_ph18618.service.AccountService;
 import com.poly.j6d8_asm_ph18618.service.AuthorityService;
+import com.poly.j6d8_asm_ph18618.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -25,6 +27,8 @@ public class SecurityController {
     AuthorityService authorityService;
     @Autowired
     Authority authority;
+    @Autowired
+    UserService userService;
     @RequestMapping("/security/login/form")
     public String loginForm(Model model) {
         model.addAttribute("message", "Vui lòng đăng nhập");
@@ -55,6 +59,12 @@ public class SecurityController {
         return "security/login";
     }
 
+    @RequestMapping("/oauth2/login/success")
+    public String success(OAuth2AuthenticationToken oauth2){
+        userService.loginFrom(oauth2);
+        return "forward:/security/login/success";
+    }
+
     @RequestMapping("/security/register-form")
     public String registerForm(Model model) {
         model.addAttribute("account", new Account());
@@ -68,13 +78,13 @@ public class SecurityController {
             @Validated @ModelAttribute("account")Account account,
             Errors errors
     ) {
-
-        System.out.println("test"+rePass);
         if(errors.hasErrors()) {
             model.addAttribute("message", " Vui lòng sửa các lỗi sau");
+            model.addAttribute("account", account);
             return "security/register";
         }
         if(!account.getPassword().equals(rePass)) {
+            model.addAttribute("account", account);
             model.addAttribute("rePass", "Please enter your RePassword");
             return "security/register";
         }
@@ -122,4 +132,5 @@ public class SecurityController {
 
         return "redirect:/product/list ";
     }
+
 }

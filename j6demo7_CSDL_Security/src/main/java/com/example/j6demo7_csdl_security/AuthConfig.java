@@ -105,5 +105,12 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
         http.logout()
                 .logoutUrl("/auth/logoff")// mặc định
                 .logoutSuccessUrl("/auth/logoff/success"); // sau khi logout thành công sẽ chuyển tới địa chỉ này
+
+        //OAuth2 - Dang nhap mang xa hoi
+        http.oauth2Login().loginPage("/auth/login/form")
+                .defaultSuccessUrl("/oauth2/login/success", true)
+                .failureUrl("/auth/login/error")
+                .authorizationEndpoint()
+                .baseUri("/oauth2/authorization");
     }
 }
